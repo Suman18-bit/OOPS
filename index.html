@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full OOP in Java — Complete Notes</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #dbe4ee;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --chip: #eef2ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      background: #082f49;
+      color: white;
+      padding: 20px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    aside h1 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+      line-height: 1.3;
+    }
+
+    aside p {
+      color: #bae6fd;
+      font-size: 0.92rem;
+      margin-top: 0;
+    }
+
+    nav a {
+      display: block;
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 7px 10px;
+      border-radius: 8px;
+      margin: 2px 0;
+      font-size: 0.94rem;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+
+    main {
+      padding: 30px clamp(16px, 4vw, 48px);
+      max-width: 1150px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #082f49, #2563eb);
+      color: white;
+      border-radius: 24px;
+      padding: 30px;
+      margin-bottom: 28px;
+    }
+
+    .hero h2 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+      border: none;
+    }
+
+    .hero p {
+      margin: 6px 0;
+      color: #e2e8f0;
+    }
+
+    .hero code {
+      background: rgba(255,255,255,0.16);
+      color: white;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      margin: 22px 0;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.55rem;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    p, li {
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    code {
+      background: var(--chip);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.94em;
+    }
+
+    pre {
+      position: relative;
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 18px;
+      border-radius: 16px;
+      overflow: auto;
+      line-height: 1.55;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: 0.92rem;
+    }
+
+    .output {
+      background: #082f49;
+      color: #bae6fd;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eff6ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin: 14px 0;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: #1d4ed8;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin: 0 6px 6px 0;
+    }
+
+    .note {
+      background: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+    }
+
+    .success {
+      background: #f0fdf4;
+      border-left: 5px solid #22c55e;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+    }
+
+    .copy {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: 0;
+      border-radius: 8px;
+      background: #334155;
+      color: white;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .copy:hover {
+      background: #475569;
+    }
+
+    footer {
+      padding: 18px 0 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <h1>Full OOP in Java</h1>
+      <p>Complete single-file notes</p>
+      <nav>
+        <a href="#what-is-oop">1. What is OOP?</a>
+        <a href="#class-object">2. Class and Object</a>
+        <a href="#fields-methods">3. Fields, Methods, Memory</a>
+        <a href="#access-modifiers">4. Access Modifiers</a>
+        <a href="#encapsulation">5. Encapsulation</a>
+        <a href="#constructors">6. Constructors</a>
+        <a href="#this-keyword">7. this Keyword</a>
+        <a href="#overloading">8. Method Overloading</a>
+        <a href="#static">9. static Keyword</a>
+        <a href="#inheritance">10. Inheritance</a>
+        <a href="#super-keyword">11. super Keyword</a>
+        <a href="#overriding">12. Method Overriding</a>
+        <a href="#polymorphism">13. Polymorphism</a>
+        <a href="#casting">14. Upcasting / Downcasting</a>
+        <a href="#abstraction">15. Abstraction</a>
+        <a href="#abstract-class">16. Abstract Class</a>
+        <a href="#interfaces">17. Interfaces</a>
+        <a href="#interface-features">18. Interface Features</a>
+        <a href="#abstract-vs-interface">19. Abstract Class vs Interface</a>
+        <a href="#final">20. final Keyword</a>
+        <a href="#object-methods">21. Object Class Methods</a>
+        <a href="#composition">22. Composition</a>
+        <a href="#enums">23. Enums</a>
+        <a href="#records">24. Records</a>
+        <a href="#sealed">25. Sealed Classes</a>
+        <a href="#nested">26. Nested Classes</a>
+        <a href="#lambda">27. Anonymous Class and Lambda</a>
+        <a href="#packages">28. Packages</a>
+        <a href="#project">29. Mini Project</a>
+        <a href="#solid">30. SOLID Principles</a>
+        <a href="#mistakes">31. Common Mistakes</a>
+        <a href="#interview">32. Interview Questions</a>
+        <a href="#practice">33. Practice Problems</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <h2>Full OOP in Java — Complete Notes</h2>
+        <p>This is a self-contained HTML study note covering Java Object-Oriented Programming from basics to advanced concepts.</p>
+        <p>
+          <span class="badge">Class</span>
+          <span class="badge">Object</span>
+          <span class="badge">Encapsulation</span>
+          <span class="badge">Inheritance</span>
+          <span class="badge">Polymorphism</span>
+          <span class="badge">Abstraction</span>
+          <span class="badge">Interfaces</span>
+          <span class="badge">Records</span>
+          <span class="badge">Sealed Classes</span>
+        </p>
+      </div>
+
+      <section id="what-is-oop">
+        <h2>1. What is OOP?</h2>
+        <p>
+          <strong>Object-Oriented Programming (OOP)</strong> is a programming style based on objects.
+          An object represents a real-world or conceptual thing such as a car, student, bank account, order, or employee.
+        </p>
+
+        <p>An object has:</p>
+        <ul>
+          <li><strong>State</strong> — data, such as name, balance, speed</li>
+          <li><strong>Behavior</strong> — actions, such as deposit, start, calculate</li>
+          <li><strong>Identity</strong> — each object is a separate instance</li>
+        </ul>
+
+        <h3>The 4 Pillars of OOP</h3>
+        <table>
+          <tr>
+            <th>Pillar</th>
+            <th>Meaning</th>
+          </tr>
+          <tr>
+            <td>Encapsulation</td>
+            <td>Wrap data and methods together and protect data</td>
+          </tr>
+          <tr>
+            <td>Inheritance</td>
+            <td>One class can reuse or extend another class</td>
+          </tr>
+          <tr>
+            <td>Polymorphism</td>
+            <td>The same action can behave differently</td>
+          </tr>
+          <tr>
+            <td>Abstraction</td>
+            <td>Hide complexity and show only essential details</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="class-object">
+        <h2>2. Class and Object</h2>
+
+        <h3>Class</h3>
+        <p>A class is a blueprint for creating objects.</p>
+
+        <pre><code>class Car {
+    String model;
+    int speed;
+
+    void start() {
+        System.out.println(model + " started");
+    }
+}</code></pre>
+
+        <h3>Object</h3>
+        <p>An object is an instance of a class.</p>
+
+        <pre><code>Car car = new Car();</code></pre>
+
+        <h3>Full Example</h3>
+        <pre><code>class Car {
+    String model;
+    int speed;
+
+    void start() {
+        System.out.println(model + " started");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car1 = new Car();
+        car1.model = "BMW";
+
+        Car car2 = new Car();
+        car2.model = "Audi";
+
+        car1.start();
+        car2.start();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>BMW started
+Audi started</code></pre>
+      </section>
+
+      <section id="fields-methods">
+        <h2>3. Fields, Methods, and Memory</h2>
+
+        <h3>Fields</h3>
+        <p>Fields store object state.</p>
+
+        <pre><code>class Student {
+    String name;
+    int marks;
+}</code></pre>
+
+        <h3>Default Field Values</h3>
+        <table>
+          <tr>
+            <th>Type</th>
+            <th>Default Value</th>
+          </tr>
+          <tr><td>int</td><td>0</td></tr>
+          <tr><td>double</td><td>0.0</td></tr>
+          <tr><td>boolean</td><td>false</td></tr>
+          <tr><td>Object reference</td><td>null</td></tr>
+        </table>
+
+        <h3>Methods</h3>
+        <p>Methods define object behavior.</p>
+
+        <pre><code>class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(5, 3));
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>8</code></pre>
+
+        <h3>Reference vs Object</h3>
+        <pre><code>Student s1 = new Student();
+Student s2 = s1;
+
+s1.name = "Aman";
+System.out.println(s2.name);</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Aman</code></pre>
+
+        <div class="note">
+          <strong>Note:</strong> Java is always pass-by-value. For objects, the reference value is copied.
+        </div>
+      </section>
+
+      <section id="access-modifiers">
+        <h2>4. Access Modifiers</h2>
+        <p>Access modifiers control visibility of classes, fields, constructors, and methods.</p>
+
+        <table>
+          <tr>
+            <th>Modifier</th>
+            <th>Same Class</th>
+            <th>Same Package</th>
+            <th>Subclass</th>
+            <th>Other Package</th>
+          </tr>
+          <tr>
+            <td><code>private</code></td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>default</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><code>protected</code></td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><code>public</code></td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+        </table>
+
+        <pre><code>class Account {
+    private double balance;
+    public String owner;
+}</code></pre>
+
+        <div class="note">
+          <strong>Important:</strong> Use <code>private</code> fields when you want to protect internal object state.
+        </div>
+      </section>
+
+      <section id="encapsulation">
+        <h2>5. Encapsulation</h2>
+        <p>
+          Encapsulation means wrapping data and methods together and restricting direct access to data.
+          In Java, this is usually done using private fields and public getter/setter methods.
+        </p>
+
+        <h3>Example</h3>
+        <pre><code>class BankAccount {
+    private double balance;
+
+    public void deposit(double amount) {
+        if (amount &lt;= 0) {
+            System.out.println("Invalid amount");
+            return;
+        }
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount &lt;= 0 || amount &gt; balance) {
+            System.out.println("Invalid withdrawal");
+            return;
+        }
+        balance -= amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount();
+
+        account.deposit(1000);
+        account.withdraw(300);
+
+        System.out.println(account.getBalance());
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>700.0</code></pre>
+
+        <h3>Getter and Setter Example</h3>
+        <pre><code>class Student {
+    private String name;
+    private int marks;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+
+    public void setMarks(int marks) {
+        if (marks &gt;= 0 &amp;&amp; marks &lt;= 100) {
+            this.marks = marks;
+        } else {
+            System.out.println("Invalid marks");
+        }
+    }
+}</code></pre>
+
+        <h3>Immutable Class Example</h3>
+        <pre><code>class User {
+    private final String name;
+    private final int age;
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}</code></pre>
+
+        <div class="success">
+          Immutable objects are useful because their state cannot change after creation.
+        </div>
+      </section>
+
+      <section id="constructors">
+        <h2>6. Constructors</h2>
+        <p>A constructor is a special method used to initialize objects. Its name must match the class name and it has no return type.</p>
+
+        <h3>No-Argument Constructor</h3>
+        <pre><code>class Student {
+    String name;
+
+    Student() {
+        name = "Unknown";
+    }
+}</code></pre>
+
+        <h3>Parameterized Constructor</h3>
+        <pre><code>class Student {
+    String name;
+    int marks;
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    void show() {
+        System.out.println(name + " got " + marks);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s1 = new Student("Aman", 90);
+        Student s2 = new Student("Ravi", 80);
+
+        s1.show();
+        s2.show();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Aman got 90
+Ravi got 80</code></pre>
+
+        <h3>Constructor Overloading</h3>
+        <pre><code>class Student {
+    String name;
+    int marks;
+
+    Student() {
+        this("Unknown", 0);
+    }
+
+    Student(String name) {
+        this(name, 0);
+    }
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+}</code></pre>
+      </section>
+
+      <section id="this-keyword">
+        <h2>7. this Keyword</h2>
+        <p><code>this</code> refers to the current object.</p>
+
+        <h3>Use 1: Access instance field</h3>
+        <pre><code>class Student {
+    String name;
+
+    Student(String name) {
+        this.name = name;
+    }
+}</code></pre>
+
+        <h3>Use 2: Call another constructor</h3>
+        <pre><code>class Student {
+    String name;
+    int marks;
+
+    Student() {
+        this("Unknown", 0);
+    }
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+}</code></pre>
+      </section>
+
+      <section id="overloading">
+        <h2>8. Method Overloading</h2>
+        <p>
+          Method overloading means multiple methods have the same name but different parameters.
+          This is compile-time polymorphism.
+        </p>
+
+        <pre><code>class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    double add(double a, double b) {
+        return a + b;
+    }
+
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+
+        System.out.println(calc.add(2, 3));
+        System.out.println(calc.add(2.5, 3.5));
+        System.out.println(calc.add(1, 2, 3));
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>5
+6.0
+6</code></pre>
+
+        <div class="note">
+          Overloading does not depend only on return type. The parameter list must be different.
+        </div>
+      </section>
+
+      <section id="static">
+        <h2>9. static Keyword</h2>
+        <p><code>static</code> means the member belongs to the class, not to a specific object.</p>
+
+        <h3>Static Variable</h3>
+        <pre><code>class Student {
+    static String school = "ABC School";
+    String name;
+}</code></pre>
+
+        <h3>Static Method</h3>
+        <pre><code>class MathUtils {
+    static int square(int x) {
+        return x * x;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(MathUtils.square(5));
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>25</code></pre>
+
+        <div class="note">
+          A static method cannot directly access non-static fields or methods.
+        </div>
+      </section>
+
+      <section id="inheritance">
+        <h2>10. Inheritance</h2>
+        <p>Inheritance allows one class to reuse fields and methods of another class using <code>extends</code>.</p>
+
+        <pre><code>class Animal {
+    void eat() {
+        System.out.println("Animal is eating");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog is barking");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat();
+        dog.bark();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Animal is eating
+Dog is barking</code></pre>
+
+        <h3>Supported Inheritance in Java</h3>
+        <ul>
+          <li>Single inheritance</li>
+          <li>Multilevel inheritance</li>
+          <li>Hierarchical inheritance</li>
+          <li>Multiple inheritance using interfaces</li>
+        </ul>
+
+        <div class="note">
+          Java does not support multiple inheritance with classes because of ambiguity.
+        </div>
+      </section>
+
+      <section id="super-keyword">
+        <h2>11. super Keyword</h2>
+        <p><code>super</code> refers to the parent class.</p>
+
+        <h3>Call parent constructor</h3>
+        <pre><code>class Animal {
+    Animal() {
+        System.out.println("Animal constructor");
+    }
+}
+
+class Dog extends Animal {
+    Dog() {
+        super();
+        System.out.println("Dog constructor");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Animal constructor
+Dog constructor</code></pre>
+
+        <h3>Call parent method</h3>
+        <pre><code>class Animal {
+    void eat() {
+        System.out.println("Animal eating");
+    }
+}
+
+class Dog extends Animal {
+    void eat() {
+        super.eat();
+        System.out.println("Dog eating");
+    }
+}</code></pre>
+      </section>
+
+      <section id="overriding">
+        <h2>12. Method Overriding</h2>
+        <p>Method overriding means a subclass provides its own version of a parent method.</p>
+
+        <pre><code>class Animal {
+    void sound() {
+        System.out.println("Some sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Bark");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Meow");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal a1 = new Dog();
+        Animal a2 = new Cat();
+
+        a1.sound();
+        a2.sound();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Bark
+Meow</code></pre>
+      </section>
+
+      <section id="polymorphism">
+        <h2>13. Polymorphism</h2>
+        <p>Polymorphism means one action can behave in multiple ways.</p>
+
+        <div class="grid">
+          <div class="card">
+            <h4>Compile-time polymorphism</h4>
+            <p>Achieved using method overloading.</p>
+          </div>
+          <div class="card">
+            <h4>Runtime polymorphism</h4>
+            <p>Achieved using method overriding.</p>
+          </div>
+        </div>
+
+        <h3>Runtime Polymorphism Example</h3>
+        <pre><code>class Shape {
+    void draw() {
+        System.out.println("Drawing shape");
+    }
+}
+
+class Circle extends Shape {
+    @Override
+    void draw() {
+        System.out.println("Drawing circle");
+    }
+}
+
+class Square extends Shape {
+    @Override
+    void draw() {
+        System.out.println("Drawing square");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape s1 = new Circle();
+        Shape s2 = new Square();
+
+        s1.draw();
+        s2.draw();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Drawing circle
+Drawing square</code></pre>
+      </section>
+
+      <section id="casting">
+        <h2>14. Upcasting and Downcasting</h2>
+
+        <h3>Upcasting</h3>
+        <pre><code>Dog dog = new Dog();
+Animal animal = dog;</code></pre>
+
+        <h3>Downcasting</h3>
+        <pre><code>Animal animal = new Dog();
+Dog dog = (Dog) animal;</code></pre>
+
+        <h3>Safe Downcasting</h3>
+        <pre><code>if (animal instanceof Dog) {
+    Dog dog = (Dog) animal;
+    dog.bark();
+}</code></pre>
+
+        <h3>Modern Pattern Matching</h3>
+        <pre><code>if (animal instanceof Dog dog) {
+    dog.bark();
+}</code></pre>
+      </section>
+
+      <section id="abstraction">
+        <h2>15. Abstraction</h2>
+        <p>
+          Abstraction means hiding internal complexity and showing only useful details.
+        </p>
+
+        <p>In Java, abstraction is achieved using:</p>
+        <ul>
+          <li>abstract classes</li>
+          <li>interfaces</li>
+        </ul>
+
+        <div class="note">
+          Example: A car driver uses steering and brakes without knowing the internal engine details.
+        </div>
+      </section>
+
+      <section id="abstract-class">
+        <h2>16. Abstract Class</h2>
+        <p>An abstract class cannot be instantiated. It can have abstract and non-abstract methods.</p>
+
+        <pre><code>abstract class Animal {
+    abstract void sound();
+
+    void sleep() {
+        System.out.println("Sleeping");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Dog();
+        animal.sound();
+        animal.sleep();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Bark
+Sleeping</code></pre>
+
+        <h3>Abstract Class Example</h3>
+        <pre><code>abstract class Shape {
+    String color;
+
+    Shape(String color) {
+        this.color = color;
+    }
+
+    abstract double area();
+
+    void display() {
+        System.out.println(color + " shape has area " + area());
+    }
+}
+
+class Circle extends Shape {
+    double radius;
+
+    Circle(String color, double radius) {
+        super(color);
+        this.radius = radius;
+    }
+
+    @Override
+    double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle extends Shape {
+    double length;
+    double width;
+
+    Rectangle(String color, double length, double width) {
+        super(color);
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    double area() {
+        return length * width;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape s1 = new Circle("Red", 5);
+        Shape s2 = new Rectangle("Blue", 4, 6);
+
+        s1.display();
+        s2.display();
+    }
+}</code></pre>
+      </section>
+
+      <section id="interfaces">
+        <h2>17. Interfaces</h2>
+        <p>An interface is a contract. It defines what a class must do.</p>
+
+        <pre><code>interface Animal {
+    void sound();
+}
+
+class Dog implements Animal {
+    @Override
+    public void sound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Dog();
+        animal.sound();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Bark</code></pre>
+
+        <h3>Multiple Interfaces</h3>
+        <pre><code>interface Printable {
+    void print();
+}
+
+interface Scannable {
+    void scan();
+}
+
+class Machine implements Printable, Scannable {
+    @Override
+    public void print() {
+        System.out.println("Printing");
+    }
+
+    @Override
+    public void scan() {
+        System.out.println("Scanning");
+    }
+}</code></pre>
+      </section>
+
+      <section id="interface-features">
+        <h2>18. Interface Features</h2>
+
+        <h3>Default Method</h3>
+        <pre><code>interface Animal {
+    void sound();
+
+    default void sleep() {
+        System.out.println("Sleeping");
+    }
+}</code></pre>
+
+        <h3>Static Method</h3>
+        <pre><code>interface MathHelper {
+    static int square(int x) {
+        return x * x;
+    }
+}</code></pre>
+
+        <h3>Private Method</h3>
+        <pre><code>interface Logger {
+    private void logInternal(String message) {
+        System.out.println("LOG: " + message);
+    }
+
+    default void log(String message) {
+        logInternal(message);
+    }
+}</code></pre>
+
+        <h3>Interface Conflict</h3>
+        <pre><code>interface A {
+    default void hello() {
+        System.out.println("Hello from A");
+    }
+}
+
+interface B {
+    default void hello() {
+        System.out.println("Hello from B");
+    }
+}
+
+class C implements A, B {
+    @Override
+    public void hello() {
+        A.super.hello();
+    }
+}</code></pre>
+      </section>
+
+      <section id="abstract-vs-interface">
+        <h2>19. Abstract Class vs Interface</h2>
+
+        <table>
+          <tr>
+            <th>Feature</th>
+            <th>Abstract Class</th>
+            <th>Interface</th>
+          </tr>
+          <tr>
+            <td>Keyword</td>
+            <td><code>extends</code></td>
+            <td><code>implements</code></td>
+          </tr>
+          <tr>
+            <td>Constructor</td>
+            <td>Yes</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Fields</td>
+            <td>Any type</td>
+            <td>public static final by default</td>
+          </tr>
+          <tr>
+            <td>Methods</td>
+            <td>Abstract and concrete</td>
+            <td>Abstract, default, static, private</td>
+          </tr>
+          <tr>
+            <td>Inheritance</td>
+            <td>Single inheritance</td>
+            <td>Multiple implementation</td>
+          </tr>
+          <tr>
+            <td>Use when</td>
+            <td>Classes share common state or behavior</td>
+            <td>Unrelated classes need same capability</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="final">
+        <h2>20. final Keyword</h2>
+
+        <h3>Final Variable</h3>
+        <pre><code>final int x = 10;
+// x = 20; // error</code></pre>
+
+        <h3>Final Method</h3>
+        <pre><code>class Parent {
+    final void show() {
+        System.out.println("Parent");
+    }
+}</code></pre>
+
+        <h3>Final Class</h3>
+        <pre><code>final class Config {
+}</code></pre>
+
+        <table>
+          <tr>
+            <th>Use</th>
+            <th>Effect</th>
+          </tr>
+          <tr>
+            <td>final variable</td>
+            <td>Cannot be reassigned</td>
+          </tr>
+          <tr>
+            <td>final method</td>
+            <td>Cannot be overridden</td>
+          </tr>
+          <tr>
+            <td>final class</td>
+            <td>Cannot be inherited</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="object-methods">
+        <h2>21. Object Class Methods</h2>
+        <p>Every class in Java inherits from <code>Object</code>. Important methods are <code>toString()</code>, <code>equals()</code>, and <code>hashCode()</code>.</p>
+
+        <h3>toString()</h3>
+        <pre><code>class Student {
+    String name;
+    int marks;
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name=" + name + ", marks=" + marks + "}";
+    }
+}</code></pre>
+
+        <h3>equals() and hashCode()</h3>
+        <pre><code>import java.util.Objects;
+
+class Student {
+    String name;
+    int marks;
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Student other)) return false;
+
+        return this.marks == other.marks &amp;&amp;
+               Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, marks);
+    }
+}</code></pre>
+
+        <div class="note">
+          If you override <code>equals()</code>, you should also override <code>hashCode()</code>.
+        </div>
+      </section>
+
+      <section id="composition">
+        <h2>22. Composition</h2>
+        <p>Composition means <strong>has-a</strong> relationship.</p>
+
+        <pre><code>class Engine {
+    void start() {
+        System.out.println("Engine started");
+    }
+}
+
+class Car {
+    private Engine engine;
+
+    Car() {
+        engine = new Engine();
+    }
+
+    void start() {
+        engine.start();
+        System.out.println("Car started");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.start();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Engine started
+Car started</code></pre>
+
+        <h3>Association, Aggregation, Composition</h3>
+        <table>
+          <tr>
+            <th>Type</th>
+            <th>Meaning</th>
+            <th>Example</th>
+          </tr>
+          <tr>
+            <td>Association</td>
+            <td>General relationship</td>
+            <td>Teacher and Student</td>
+          </tr>
+          <tr>
+            <td>Aggregation</td>
+            <td>Weak has-a relationship</td>
+            <td>Department has Teachers</td>
+          </tr>
+          <tr>
+            <td>Composition</td>
+            <td>Strong has-a relationship</td>
+            <td>House has Rooms</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="enums">
+        <h2>23. Enums</h2>
+        <p>Enums represent fixed constants.</p>
+
+        <pre><code>enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+    THURSDAY, FRIDAY, SATURDAY
+}</code></pre>
+
+        <h3>Enum with Fields and Methods</h3>
+        <pre><code>enum Planet {
+    MERCURY(3.7),
+    VENUS(8.87),
+    EARTH(9.81);
+
+    private final double gravity;
+
+    Planet(double gravity) {
+        this.gravity = gravity;
+    }
+
+    public double getGravity() {
+        return gravity;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(Planet.EARTH.getGravity());
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>9.81</code></pre>
+      </section>
+
+      <section id="records">
+        <h2>24. Records</h2>
+        <p>Records are modern immutable data carriers.</p>
+
+        <pre><code>record Point(int x, int y) {
+}</code></pre>
+
+        <p>This automatically creates:</p>
+        <ul>
+          <li>private final fields</li>
+          <li>constructor</li>
+          <li>getters</li>
+          <li><code>equals()</code></li>
+          <li><code>hashCode()</code></li>
+          <li><code>toString()</code></li>
+        </ul>
+
+        <pre><code>public class Main {
+    public static void main(String[] args) {
+        Point p = new Point(10, 20);
+
+        System.out.println(p.x());
+        System.out.println(p.y());
+        System.out.println(p);
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>10
+20
+Point[x=10, y=20]</code></pre>
+
+        <h3>Compact Constructor</h3>
+        <pre><code>record Age(int value) {
+    Age {
+        if (value &lt; 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+    }
+}</code></pre>
+      </section>
+
+      <section id="sealed">
+        <h2>25. Sealed Classes</h2>
+        <p>Sealed classes control which classes can inherit from them.</p>
+
+        <pre><code>sealed interface Shape permits Circle, Square {
+}
+
+final class Circle implements Shape {
+}
+
+non-sealed class Square implements Shape {
+}</code></pre>
+
+        <table>
+          <tr>
+            <th>Modifier</th>
+            <th>Meaning</th>
+          </tr>
+          <tr>
+            <td><code>final</code></td>
+            <td>Cannot be extended</td>
+          </tr>
+          <tr>
+            <td><code>non-sealed</code></td>
+            <td>Open for unknown subclasses</td>
+          </tr>
+          <tr>
+            <td><code>sealed</code></td>
+            <td>Controls its own subclasses</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="nested">
+        <h2>26. Nested Classes</h2>
+
+        <h3>Static Nested Class</h3>
+        <pre><code>class Outer {
+    static class Nested {
+        void show() {
+            System.out.println("Nested class");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Outer.Nested obj = new Outer.Nested();
+        obj.show();
+    }
+}</code></pre>
+
+        <h3>Inner Class</h3>
+        <pre><code>class Outer {
+    private String message = "Hello";
+
+    class Inner {
+        void show() {
+            System.out.println(message);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Outer outer = new Outer();
+        Outer.Inner inner = outer.new Inner();
+        inner.show();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Hello</code></pre>
+      </section>
+
+      <section id="lambda">
+        <h2>27. Anonymous Class and Lambda</h2>
+
+        <h3>Anonymous Class</h3>
+        <pre><code>interface Greeting {
+    void greet();
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeting greeting = new Greeting() {
+            @Override
+            public void greet() {
+                System.out.println("Hello");
+            }
+        };
+
+        greeting.greet();
+    }
+}</code></pre>
+
+        <h3>Lambda Expression</h3>
+        <pre><code>interface Greeting {
+    void greet();
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeting greeting = () -&gt; System.out.println("Hello");
+        greeting.greet();
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Hello</code></pre>
+      </section>
+
+      <section id="packages">
+        <h2>28. Packages</h2>
+        <p>Packages organize Java classes.</p>
+
+        <pre><code>package com.myapp.model;
+
+public class User {
+}</code></pre>
+
+        <table>
+          <tr>
+            <th>Package</th>
+            <th>Purpose</th>
+          </tr>
+          <tr>
+            <td><code>java.lang</code></td>
+            <td>Core classes, automatically imported</td>
+          </tr>
+          <tr>
+            <td><code>java.util</code></td>
+            <td>Collections, Objects, Date utilities</td>
+          </tr>
+          <tr>
+            <td><code>java.io</code></td>
+            <td>Input/output operations</td>
+          </tr>
+          <tr>
+            <td><code>java.time</code></td>
+            <td>Date and Time API</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="project">
+        <h2>29. Mini Project — Payment System</h2>
+        <p>This example uses abstraction, inheritance, interfaces, encapsulation, and polymorphism.</p>
+
+        <pre><code>abstract class PaymentMethod {
+    private String owner;
+
+    public PaymentMethod(String owner) {
+        this.owner = owner;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public abstract boolean pay(double amount);
+}
+
+interface Refundable {
+    boolean refund(double amount);
+}
+
+class CreditCard extends PaymentMethod implements Refundable {
+    private double balance;
+
+    public CreditCard(String owner, double balance) {
+        super(owner);
+        this.balance = balance;
+    }
+
+    @Override
+    public boolean pay(double amount) {
+        if (amount &lt;= 0 || amount &gt; balance) {
+            return false;
+        }
+
+        balance -= amount;
+        System.out.println("Paid " + amount + " using Credit Card");
+        return true;
+    }
+
+    @Override
+    public boolean refund(double amount) {
+        if (amount &lt;= 0) {
+            return false;
+        }
+
+        balance += amount;
+        System.out.println("Refunded " + amount + " to Credit Card");
+        return true;
+    }
+}
+
+class UpiPayment extends PaymentMethod {
+    private String upiId;
+
+    public UpiPayment(String owner, String upiId) {
+        super(owner);
+        this.upiId = upiId;
+    }
+
+    @Override
+    public boolean pay(double amount) {
+        if (amount &lt;= 0) {
+            return false;
+        }
+
+        System.out.println("Paid " + amount + " using UPI: " + upiId);
+        return true;
+    }
+}
+
+class PaymentService {
+    public void processPayment(PaymentMethod method, double amount) {
+        boolean success = method.pay(amount);
+
+        if (success) {
+            System.out.println("Payment successful for " + method.getOwner());
+        } else {
+            System.out.println("Payment failed for " + method.getOwner());
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        PaymentService service = new PaymentService();
+
+        PaymentMethod card = new CreditCard("Aman", 1000);
+        PaymentMethod upi = new UpiPayment("Ravi", "ravi@upi");
+
+        service.processPayment(card, 300);
+        service.processPayment(upi, 500);
+
+        Refundable refundable = (Refundable) card;
+        refundable.refund(100);
+    }
+}</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>Paid 300.0 using Credit Card
+Payment successful for Aman
+Paid 500.0 using UPI: ravi@upi
+Payment successful for Ravi
+Refunded 100.0 to Credit Card</code></pre>
+      </section>
+
+      <section id="solid">
+        <h2>30. SOLID Principles</h2>
+
+        <table>
+          <tr>
+            <th>Letter</th>
+            <th>Principle</th>
+          </tr>
+          <tr>
+            <td>S</td>
+            <td>Single Responsibility Principle</td>
+          </tr>
+          <tr>
+            <td>O</td>
+            <td>Open/Closed Principle</td>
+          </tr>
+          <tr>
+            <td>L</td>
+            <td>Liskov Substitution Principle</td>
+          </tr>
+          <tr>
+            <td>I</td>
+            <td>Interface Segregation Principle</td>
+          </tr>
+          <tr>
+            <td>D</td>
+            <td>Dependency Inversion Principle</td>
+          </tr>
+        </table>
+
+        <h3>Single Responsibility</h3>
+        <pre><code>class User {
+}
+
+class UserRepository {
+    void save(User user) {
+    }
+}
+
+class EmailService {
+    void sendEmail(User user) {
+    }
+}</code></pre>
+
+        <h3>Interface Segregation</h3>
+        <pre><code>interface Workable {
+    void work();
+}
+
+interface Eatable {
+    void eat();
+}</code></pre>
+
+        <h3>Dependency Inversion</h3>
+        <pre><code>interface PaymentMethod {
+    boolean pay(double amount);
+}
+
+class PaymentService {
+    private PaymentMethod paymentMethod;
+
+    PaymentService(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+}</code></pre>
+      </section>
+
+      <section id="mistakes">
+        <h2>31. Common Mistakes</h2>
+
+        <h3>1. Comparing objects using ==</h3>
+        <pre><code>String s1 = new String("Hello");
+String s2 = new String("Hello");
+
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));</code></pre>
+
+        <h3>Output</h3>
+        <pre class="output"><code>false
+true</code></pre>
+
+        <h3>2. Forgetting hashCode() with equals()</h3>
+        <p>If you override <code>equals()</code>, also override <code>hashCode()</code>.</p>
+
+        <h3>3. Using public fields unnecessarily</h3>
+        <pre><code>public int balance; // usually bad</code></pre>
+
+        <p>Better:</p>
+        <pre><code>private int balance;</code></pre>
+
+        <h3>4. Thinking static methods are overridden</h3>
+        <p>Static methods are hidden, not overridden.</p>
+
+        <h3>5. Overusing inheritance</h3>
+        <p>If the relationship is not truly <strong>is-a</strong>, prefer composition.</p>
+      </section>
+
+      <section id="interview">
+        <h2>32. Interview Questions</h2>
+
+        <h3>Q1. What is the difference between class and object?</h3>
+        <p>A class is a blueprint. An object is an instance of a class.</p>
+
+        <h3>Q2. What is encapsulation?</h3>
+        <p>Encapsulation is bundling data and methods together and restricting direct access using private fields.</p>
+
+        <h3>Q3. What is inheritance?</h3>
+        <p>Inheritance allows one class to acquire properties of another class using <code>extends</code>.</p>
+
+        <h3>Q4. Does Java support multiple inheritance?</h3>
+        <p>Java does not support multiple inheritance with classes, but supports it through interfaces.</p>
+
+        <h3>Q5. What is polymorphism?</h3>
+        <p>Polymorphism allows the same method to behave differently. Java supports overloading and overriding.</p>
+
+        <h3>Q6. What is abstraction?</h3>
+        <p>Abstraction hides implementation details and shows only functionality.</p>
+
+        <h3>Q7. Difference between abstract class and interface?</h3>
+        <p>Abstract classes can have constructors and state. Interfaces cannot have constructors. A class can implement multiple interfaces but extend only one class.</p>
+
+        <h3>Q8. Difference between overloading and overriding?</h3>
+        <p>Overloading happens in the same class with different parameters. Overriding happens in a subclass with the same method signature.</p>
+
+        <h3>Q9. Can static methods be overridden?</h3>
+        <p>No. Static methods are hidden, not overridden.</p>
+
+        <h3>Q10. What is final keyword?</h3>
+        <p>Final variable cannot be reassigned, final method cannot be overridden, final class cannot be inherited.</p>
+      </section>
+
+      <section id="practice">
+        <h2>33. Practice Problems</h2>
+
+        <div class="grid">
+          <div class="card">
+            <h4>Student System</h4>
+            <p>Create a Student class with private fields, constructor, getters/setters, and grade method.</p>
+          </div>
+
+          <div class="card">
+            <h4>Bank Account</h4>
+            <p>Create abstract BankAccount and subclasses SavingsAccount and CurrentAccount.</p>
+          </div>
+
+          <div class="card">
+            <h4>Shape Hierarchy</h4>
+            <p>Create abstract Shape and classes Circle, Rectangle, Triangle.</p>
+          </div>
+
+          <div class="card">
+            <h4>Employee Payroll</h4>
+            <p>Create Payable interface and employee classes with salary calculation.</p>
+          </div>
+
+          <div class="card">
+            <h4>Library System</h4>
+            <p>Create Book, Member, and Library classes using composition.</p>
+          </div>
+
+          <div class="card">
+            <h4>Payment System</h4>
+            <p>Create PaymentMethod abstraction and multiple payment implementations.</p>
+          </div>
+        </div>
+
+        <h3>Recommended Learning Path</h3>
+        <ol>
+          <li>Class and Object</li>
+          <li>Fields and Methods</li>
+          <li>Constructors</li>
+          <li>Access Modifiers</li>
+          <li>Encapsulation</li>
+          <li>static</li>
+          <li>Inheritance</li>
+          <li>Polymorphism</li>
+          <li>Abstract Classes</li>
+          <li>Interfaces</li>
+          <li>Composition</li>
+          <li>Object class methods</li>
+          <li>Enums</li>
+          <li>Records</li>
+          <li>Sealed classes</li>
+          <li>SOLID principles</li>
+        </ol>
+      </section>
+
+      <footer>
+        Full OOP in Java notes. This file is self-contained and can be used for revision, teaching, or interview preparation.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll("pre").forEach((pre) => {
+      const code = pre.querySelector("code");
+      if (!code) return;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy";
+      button.textContent = "Copy";
+
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(code.innerText);
+          button.textContent = "Copied";
+          setTimeout(() => {
+            button.textContent = "Copy";
+          }, 1200);
+        } catch (error) {
+          button.textContent = "Failed";
+        }
+      });
+
+      pre.appendChild(button);
+    });
+  </script>
+</body>
+</html>
